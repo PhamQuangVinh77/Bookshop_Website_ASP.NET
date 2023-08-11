@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace AppData.Models
         public string Password { get; set; }
         [Required, Phone(ErrorMessage = "Sai định dạng số điện thoại!")]
         public string PhoneNumber { get; set; }
+        [ForeignKey("UserRole")]
         public Guid RoleId { get; set; }
         public bool Status { get; set; }
         public virtual Cart Cart { get; set; }

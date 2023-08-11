@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(BookShopDbContext))]
-    [Migration("20230811034806_First_Migration")]
-    partial class First_Migration
+    [Migration("20230811153322_Migration_v1")]
+    partial class Migration_v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -115,6 +115,10 @@ namespace AppData.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<string>("ImageLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -154,9 +158,6 @@ namespace AppData.Migrations
                     b.Property<Guid>("BookId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CartUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
@@ -167,7 +168,7 @@ namespace AppData.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.HasIndex("CartUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("cartsDetails");
                 });
@@ -214,12 +215,9 @@ namespace AppData.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("UserRoleRoleId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("UserId");
 
-                    b.HasIndex("UserRoleRoleId");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("users");
                 });
@@ -311,8 +309,8 @@ namespace AppData.Migrations
                         .IsRequired();
 
                     b.HasOne("AppData.Models.Cart", "Cart")
-                        .WithMany("Details")
-                        .HasForeignKey("CartUserId")
+                        .WithMany("CartDetails")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -325,7 +323,7 @@ namespace AppData.Migrations
                 {
                     b.HasOne("AppData.Models.UserRole", "UserRole")
                         .WithMany("Users")
-                        .HasForeignKey("UserRoleRoleId")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -351,7 +349,7 @@ namespace AppData.Migrations
 
             modelBuilder.Entity("AppData.Models.Cart", b =>
                 {
-                    b.Navigation("Details");
+                    b.Navigation("CartDetails");
                 });
 
             modelBuilder.Entity("AppData.Models.Category", b =>

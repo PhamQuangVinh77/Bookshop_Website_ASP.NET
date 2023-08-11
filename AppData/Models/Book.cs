@@ -14,6 +14,8 @@ namespace AppData.Models
         public Guid Id { get; set; }
         [Required, MaxLength(100, ErrorMessage = "Tên SP không quá 100 ký tự!")]
         public string Name { get; set; }
+        [Required]
+        public string ImageLink { get; set; }
         [MaxLength(1000, ErrorMessage = "Mô tả quá dài!")]
         public string Description { get; set; }
         [Required]

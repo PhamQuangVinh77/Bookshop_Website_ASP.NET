@@ -11,7 +11,7 @@ namespace AppData.Models
     {
         [Key]
         public Guid UserId { get; set; }
-        public virtual ICollection<CartDetail> Details { get; set; }
+        public virtual ICollection<CartDetail> CartDetails { get; set; }
         public virtual User User { get; set; }
     }
 }

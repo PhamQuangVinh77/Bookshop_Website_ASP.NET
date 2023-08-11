@@ -8,74 +8,73 @@ namespace AppAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthorController : ControllerBase
+    public class CategoryController : ControllerBase
     {
         private readonly BookShopDbContext _dbContext;
 
-        public AuthorController(BookShopDbContext dbContext)
+        public CategoryController(BookShopDbContext dbContext)
         {
             _dbContext = dbContext;
         }
-
-        // GET api/<AuthorController>
+        // GET: api/<CategoryController>
         [HttpGet]
-        public IEnumerable<Author> GetAll()
+        public IEnumerable<Category> GetAll()
         {
-            return _dbContext.authors.ToList();
+            return _dbContext.categories.ToList();
         }
 
-        // GET api/<AuthorController>/5
+        // GET api/<CategoryController>/5
         [HttpGet("{id}")]
-        public Author GetById(Guid id)
+        public Category GetById(Guid id)
         {
-            return _dbContext.authors.ToList().FirstOrDefault(i => i.Id == id);
+            return _dbContext.categories.ToList().FirstOrDefault(x => x.Id == id);
         }
 
-        // POST api/<AuthorController>
+        // POST api/<CategoryController>
         [HttpPost]
-        public string Post(Author author)
+        public string Post(Category category)
         {
             try
             {
-                author.Id = Guid.NewGuid();
-                _dbContext.Add(author);
+                category.Id = Guid.NewGuid();
+                _dbContext.Add(category);
                 _dbContext.SaveChanges();
             }
             catch (Exception ex)
             {
-                return ("Lỗi" + ex.Message);
+                return ("Lỗi: " + ex.Message);
             }
             return "Thêm thành công!";
         }
 
-        // PUT api/<AuthorController>/5
+        // PUT api/<CategoryController>/5
         [HttpPut("{id}")]
-        public string Put(Guid id, Author author)
+        public string Put(Guid id, Category category)
         {
             try
             {
-                var obj = _dbContext.authors.ToList().FirstOrDefault(x => x.Id == id);
-                if(obj == null) { return "Không tồn tại!"; }
-                obj.AuthorName = author.AuthorName;
-                obj.Status = author.Status;
+                var obj = _dbContext.categories.ToList().FirstOrDefault(x => x.Id == id);
+                if (obj == null) return "Không tồn tại!";
+                obj.CategoryName = category.CategoryName;
+                obj.Status = category.Status;
                 _dbContext.Update(obj);
                 _dbContext.SaveChanges();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return ("Lỗi" + ex.Message);
+                return ("Lỗi: " + ex.Message);
             }
             return "Sửa thành công!";
         }
 
-        // DELETE api/<AuthorController>/5
+        // DELETE api/<CategoryController>/5
         [HttpDelete("{id}")]
         public string Delete(Guid id)
         {
             try
             {
-                var obj = _dbContext.authors.ToList().FirstOrDefault(x => x.Id == id);
-                if (obj == null) return "Không tồn tại";
+                var obj = _dbContext.categories.ToList().FirstOrDefault(x => x.Id == id);
+                if (obj == null) return "Không tồn tại!";
                 obj.Status = false;
                 _dbContext.Update(obj);
                 _dbContext.SaveChanges();
@@ -84,7 +83,7 @@ namespace AppAPI.Controllers
             {
                 return ("Lỗi: " + ex.Message);
             }
-            return "Xóa thành công";
+            return "Xóa thành công!";
         }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppData.Migrations
 {
-    public partial class First_Migration : Migration
+    public partial class Migration_v1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,6 +54,7 @@ namespace AppData.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     Price = table.Column<int>(type: "int", nullable: false),
                     AvailableQuantity = table.Column<int>(type: "int", nullable: false),
@@ -87,15 +88,14 @@ namespace AppData.Migrations
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false),
-                    UserRoleRoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_users", x => x.UserId);
                     table.ForeignKey(
-                        name: "FK_users_userRoles_UserRoleRoleId",
-                        column: x => x.UserRoleRoleId,
+                        name: "FK_users_userRoles_RoleId",
+                        column: x => x.RoleId,
                         principalTable: "userRoles",
                         principalColumn: "RoleId",
                         onDelete: ReferentialAction.Cascade);
@@ -173,8 +173,7 @@ namespace AppData.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BookId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    CartUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Quantity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -186,8 +185,8 @@ namespace AppData.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_cartsDetails_carts_CartUserId",
-                        column: x => x.CartUserId,
+                        name: "FK_cartsDetails_carts_UserId",
+                        column: x => x.UserId,
                         principalTable: "carts",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
@@ -224,14 +223,14 @@ namespace AppData.Migrations
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_cartsDetails_CartUserId",
+                name: "IX_cartsDetails_UserId",
                 table: "cartsDetails",
-                column: "CartUserId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_users_UserRoleRoleId",
+                name: "IX_users_RoleId",
                 table: "users",
-                column: "UserRoleRoleId");
+                column: "RoleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
