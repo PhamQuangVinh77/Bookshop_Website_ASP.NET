@@ -1,6 +1,7 @@
 ﻿using AppData.DBContext;
 using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,6 +38,7 @@ namespace AppAPI.Controllers
             try
             {
                 bill.Id = Guid.NewGuid();
+                bill.BillCode = "HD" + Utilities.Utility.GenerateRandomString(4);
                 _dbContext.Add(bill);
                 _dbContext.SaveChanges();
             }
@@ -55,9 +57,6 @@ namespace AppAPI.Controllers
             {
                 var obj = _dbContext.bills.ToList().FirstOrDefault(x => x.Id == id);
                 if (obj == null) return "Không tồn tại!";
-                obj.CreateDate = bill.CreateDate;
-                obj.UserId = bill.UserId;
-                obj.TotalPrice = bill.TotalPrice;
                 obj.Status = bill.Status;
                 _dbContext.Update(obj);
                 _dbContext.SaveChanges();

@@ -1,0 +1,82 @@
+﻿@model AppData.Models.User
+
+@{
+    ViewData["Title"] = "Đăng ký";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="border: solid 2px darkblue; border-radius: 15px; margin-top: 50px;">
+    <h1 style="text-align: center; font-weight: bold; color: white; background-color: darkblue; padding-top: 10px; padding-bottom: 10px; border-radius: 10px 10px 0px 0px;">ĐĂNG KÝ</h1>
+    <div class="row" style="margin: auto">
+        <form asp-action="Register" style="width: 500px; margin: 50px auto;">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="Email" class="form-control" placeholder="Email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input id="matKhau" asp-for="Password" class="form-control" type="password" placeholder="Mật khẩu"/>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input id="xacNhanMK" class="form-control" type="password" placeholder="Xác nhận mật khẩu" onmouseout="CheckMK()"/>
+                <span id="checkXacNhanMK" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Name" class="form-control" placeholder="Họ và tên"/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="PhoneNumber" class="form-control" placeholder="Số điện thoại"/>
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-check d-flex mb-5">
+                <input class="form-check-input me-2" type="checkbox" value="" id="accept" onchange="ChangeCheck()"/>
+                <label class="form-check-label" for="form2Example3">
+                    Tôi đồng ý với tất cả  <a href="#!" style="text-decoration: none; color: darkblue; font-weight: bold">điều khoản dịch vụ</a>
+                </label>
+            </div>
+            <div class="form-group" style="text-align: center">
+                <button id="buttonSubmit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn" type="submit"
+                        style="border-radius: 10px; background-color: gray; color: white; font-weight: bold; width: 200px;" disabled>
+                    ĐĂNG KÝ
+                </button>
+            </div>
+
+            <script>
+                var check = document.getElementById("accept");
+                var button = document.getElementById("buttonSubmit");
+                function ChangeCheck(){
+                    if (check.checked) {
+                        button.style.backgroundColor = "darkblue";
+                        button.disabled = false;
+                    } else {
+                        button.style.backgroundColor = "gray";
+                        button.disabled = true;
+                    }
+                }
+
+                function CheckMK(){
+                    var matKhau = document.getElementById("matKhau").value;
+                    var xacNhanMK = document.getElementById("xacNhanMK").value;
+                    var checkXacNhanMK = document.getElementById("checkXacNhanMK");
+                    if(matKhau != xacNhanMK){
+                        checkXacNhanMK.innerHTML = "*Xác nhận mật khẩu không chính xác";
+                    }else{
+                        checkXacNhanMK.innerHTML = "";
+                    }
+                }
+            </script>
+        </form>
+    </div>
+</div>
+
+<div style="margin-top: 30px;">
+    <a asp-controller="Access" asp-action="Login">
+        <button style="border: none; border-radius: 5px; color: white; background-color: darkblue; font-weight: bold; padding: 5px 20px;">
+            &#8592; Trở lại
+        </button>
+    </a>
+</div>
+
+

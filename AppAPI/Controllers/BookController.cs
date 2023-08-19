@@ -37,6 +37,8 @@ namespace AppAPI.Controllers
             try
             {
                 book.Id = Guid.NewGuid();
+                book.OpeningDate = DateTime.Now;
+                book.NumberOfPurchase = 0;
                 _dbContext.Add(book);
                 _dbContext.SaveChanges();
             }
@@ -60,6 +62,8 @@ namespace AppAPI.Controllers
                 obj.Description = book.Description;
                 obj.Price = book.Price;
                 obj.AvailableQuantity = book.AvailableQuantity;
+                obj.AuthorId = book.AuthorId;
+                obj.CategoryId = book.CategoryId;
                 obj.Status = book.Status;
                 _dbContext.Update(obj);
                 _dbContext.SaveChanges();

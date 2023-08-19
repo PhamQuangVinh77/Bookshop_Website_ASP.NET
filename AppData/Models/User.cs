@@ -12,11 +12,21 @@ namespace AppData.Models
     {
         [Key]
         public Guid UserId { get; set; }
-        [Required, EmailAddress(ErrorMessage = "Sai định dạng email!")]
+
+        [Required(ErrorMessage = "*Bắt buộc nhập")]
+        [EmailAddress(ErrorMessage = "*Sai định dạng email!")]
         public string Email { get; set; }
-        [Required, MinLength(10, ErrorMessage = "Password không được ít hơn 10 ký tự!")]
+
+        [Required(ErrorMessage = "*Bắt buộc nhập")]
+        [MinLength(10, ErrorMessage = "Password không được ít hơn 10 ký tự!")]
         public string Password { get; set; }
-        [Required, Phone(ErrorMessage = "Sai định dạng số điện thoại!")]
+
+        [Required(ErrorMessage = "*Bắt buộc nhập")]
+        [MaxLength(50, ErrorMessage = "Tên không quá 50 ký tự!")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "*Bắt buộc nhập")]
+        [Phone(ErrorMessage = "Sai định dạng số điện thoại!")]
         public string PhoneNumber { get; set; }
         [ForeignKey("UserRole")]
         public Guid RoleId { get; set; }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,12 @@ namespace AppData.Models
         public int Price { get; set; }
         [Required]
         public int AvailableQuantity { get; set; }
-
+        public DateTime OpeningDate { get; set; }
+        public int NumberOfPurchase { get; set; }
+        [ForeignKey("Author")]
+        public Guid AuthorId { get; set; }
+        [ForeignKey("Category")]
+        public Guid CategoryId { get; set; }
         public bool Status { get; set; }
         public virtual Author Author { get; set; }
         public virtual Category Category { get; set; }

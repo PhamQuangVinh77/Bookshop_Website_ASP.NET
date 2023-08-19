@@ -37,7 +37,12 @@ namespace AppAPI.Controllers
             try
             {
                 user.UserId = Guid.NewGuid();
-                _dbContext.Add(user);
+                _dbContext.users.Add(user);
+
+                var cart = new Cart();
+                cart.UserId = user.UserId;
+                _dbContext.carts.Add(cart);
+
                 _dbContext.SaveChanges();
             }
             catch (Exception ex)
@@ -55,6 +60,7 @@ namespace AppAPI.Controllers
             {
                 var obj = _dbContext.users.ToList().FirstOrDefault(x => x.UserId == id);
                 if (obj == null) return "Không tồn tại!";
+                obj.Name = user.Name;
                 obj.Email = user.Email;
                 obj.Password = user.Password;
                 obj.PhoneNumber = user.PhoneNumber;

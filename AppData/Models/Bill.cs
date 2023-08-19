@@ -9,6 +9,7 @@ namespace AppData.Models
     public class Bill
     {
         public Guid Id { get; set; }
+        public string BillCode { get; set; }
         public DateTime CreateDate { get; set; }
         public Guid UserId { get; set; }
         public int TotalPrice { get; set; }

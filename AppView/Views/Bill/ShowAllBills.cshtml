@@ -1,0 +1,124 @@
+﻿@model IEnumerable<AppData.Models.Bill>
+
+@{
+    ViewData["Title"] = "Danh sách hóa đơn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 style="text-align: center; font-weight: bold; margin-top: 50px; color: white; background-color: darkblue; padding-top: 10px; padding-bottom: 10px;">HÓA ĐƠN CỦA BẠN</h1>
+
+@if (Model != null && Model.Count() > 0)
+{
+    <table class="table" style="margin-top: 30px;">
+        <thead>
+            <tr>
+                <th style="text-align: center">
+                    Mã hóa đơn
+                </th>
+                <th style="text-align: center">
+                    Ngày mua
+                </th>
+                <th style="text-align: center">
+                    Tổng tiền
+                </th>
+                <th style="text-align: center">
+                    Tình trạng
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align: center">
+                        @Html.DisplayFor(modelItem => item.BillCode)
+                    </td>
+                    <td style="text-align: center">
+                        @Html.DisplayFor(modelItem => item.CreateDate)
+                    </td>
+                    <td style="text-align: center">
+                        @String.Format("{0:#,##0.##}", item.TotalPrice) VNĐ
+                    </td>
+                    @if (item.Status == 1)
+                    {
+                        <td style="text-align: center">Chờ xác nhận</td>
+                        <td style="width: 350px; text-align: center;">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    @using (Html.BeginForm("BillDetails", "Bill", new { id = item.Id }))
+                                    {
+                                        <input type="hidden" value="@item.Id" name="id" />
+                                        <input type="submit" value="Chi tiết" class="btn btn-primary" style="font-weight: bold; width: 90px;" />
+                                    }
+                                </div>
+                                <div class="col-md-6">
+                                    @using (Html.BeginForm("Delete", "Bill", new { id = item.Id }))
+                                    {
+                                        <input type="hidden" value="@item.Id" name="id" />
+                                        <input type="submit" value="Hủy đơn" class="btn btn-primary" style="font-weight: bold; width: 90px;" />
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                    }
+                    else if(item.Status == 2)
+                    {
+                        <td style="text-align: center">Đang giao hàng</td>
+                        <td style="width: 350px; text-align: center;">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    @using (Html.BeginForm("GoodsReceived", "Bill", new { id = item.Id }))
+                                    {
+                                        <input type="hidden" value="@item.Id" name="id" />
+                                        <input type="submit" value="Đã nhận" class="btn btn-primary" style="font-weight: bold; width: 90px;" />
+                                    }
+                                </div>
+                                <div class="col-md-4">
+                                    @using (Html.BeginForm("BillDetails", "Bill", new { id = item.Id }))
+                                    {
+                                        <input type="hidden" value="@item.Id" name="id" />
+                                        <input type="submit" value="Chi tiết" class="btn btn-primary" style="font-weight: bold; width: 90px;" />
+                                    }
+                                </div>
+                                <div class="col-md-4">
+                                    @using (Html.BeginForm("Delete", "Bill", new { id = item.Id }))
+                                    {
+                                        <input type="hidden" value="@item.Id" name="id" />
+                                        <input type="submit" value="Hủy đơn" class="btn btn-primary" style="font-weight: bold; width: 90px;" />
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                    }
+                    else if (item.Status == 3)
+                    {
+                        <td style="text-align: center">Giao hàng thành công</td>
+                        <td style="width: 350px; text-align: center;">
+                            @using (Html.BeginForm("BillDetails", "Bill", new { id = item.Id }))
+                            {
+                                <input type="hidden" value="@item.Id" name="id" />
+                                <input type="submit" value="Chi tiết" class="btn btn-primary" style="font-weight: bold; width: 90px;" />
+                            }
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="text-align: center">Đã hủy đơn</td>
+                        <td style="width: 350px; text-align: center;">
+                            @using (Html.BeginForm("BillDetails", "Bill", new { id = item.Id }))
+                            {
+                                <input type="hidden" value="@item.Id" name="id" />
+                                <input type="submit" value="Chi tiết" class="btn btn-primary" style="font-weight: bold; width: 90px;" />
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h3 style="text-align: center; font-weight: bold; color: darkblue; margin-top: 30px;">Hiện không có hóa đơn nào!</h3>
+}

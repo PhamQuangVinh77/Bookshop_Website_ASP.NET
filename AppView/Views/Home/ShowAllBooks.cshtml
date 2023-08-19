@@ -1,0 +1,44 @@
+﻿@model IEnumerable<AppData.Models.Book>
+
+@{
+    ViewData["Title"] = "Sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 style="text-align: center; font-weight: bold; margin-top: 50px; color: white; background-color: darkblue; padding-top: 10px; padding-bottom: 10px;">SẢN PHẨM</h1>
+
+<div style="margin-top: 30px; text-align: right;">
+    <form asp-action="Search">
+        Tên:
+        <input type="text" name="name" style="margin-left: 10px; padding-left: 10px; border-radius:10px;" />
+        <button style="margin-left: 10px; border: none; border-radius:10px; color: white; background-color: darkblue; font-weight: bold; padding: 5px 20px;">
+            Search
+        </button>
+    </form>
+</div>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4" style="margin-top: 20px;">
+            <div class="card" style="background-color: white; border-radius: 10px;">
+                <a asp-action="Details" asp-route-id="@item.Id">
+                    <img src="@item.ImageLink" class="card-img-top" alt="Image">
+                </a>
+                <div class="card-body">
+                    <h3 class="card-title" style="text-align: center;">@item.Name</h3>
+                    @{
+                        int giaTien = item.Price / 9 * 10;
+                        string giaTienThat = String.Format("{0:#,##0.##}", giaTien);
+                        string giaTienKM = String.Format("{0:#,##0.##}", item.Price);
+
+                    }
+                    <h4 style="text-align: center; color: gray; text-decoration: line-through;">@giaTienThat VNĐ</h4>
+                    <h3 style="text-align: center; color: red; font-weight: bold;">@giaTienKM VNĐ</h3>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+

@@ -1,0 +1,118 @@
+﻿@using AppData.Models;
+@using Microsoft.AspNetCore.Http;
+@model IEnumerable<AppData.Models.CartDetail>
+
+@{
+    ViewData["Title"] = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int stt = 1;
+    int tongTien = 0;
+    string tongTienString;
+    List<Book> lstBooks = ViewBag.ListBooks;
+}
+
+<h1 style="text-align: center; font-weight: bold; margin-top: 50px; color: white; background-color: darkblue; padding-top: 10px; padding-bottom: 10px;">GIỎ HÀNG CỦA BẠN</h1>
+
+@if(Model != null && Model.Count() > 0)
+{
+    <table class="table" style="margin-top: 30px;">
+        <thead>
+            <tr>
+                <th style="text-align: center">STT</th>
+                <th style="text-align: center">Tên sản phẩm</th>
+                <th style="text-align: center">Số lượng mua</th>
+                <th style="text-align: center">Giá tiền</th>
+                <th style="text-align: center"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align: center">@(stt++)</td>
+                    <td style="text-align: center">
+                        @lstBooks.FirstOrDefault(x => x.Id == item.BookId).Name
+                    </td>
+                    <td style="width: 200px;">
+                        <div class="row">
+                            <div class="col-md-4" style="text-align: center;">
+                                @using (Html.BeginForm("Add", "Cart", new { id = item.Id, idBook = item.BookId }))
+                                {
+                                    <input type="hidden" value="@item.Id" name="id" />
+                                    <input type="hidden" value="@item.BookId" name="idBook" />
+                                    <input type="submit" value="+" class="btn btn-primary" style="font-weight: bold; width: 60px;" />
+                                }
+                            </div>
+                            <div class="col-md-4" style="text-align: center;">
+                                @Html.DisplayFor(modelItem => item.Quantity)
+                            </div>
+                            <div class="col-md-4" style="text-align: center;">
+                                @using (Html.BeginForm("Subtract", "Cart", new { id = item.Id }))
+                                {
+                                    <input type="hidden" value="@item.Id" name="id" />
+                                    <input type="submit" value="-" class="btn btn-primary" style="font-weight: bold; width: 60px;" />
+                                }
+                            </div>
+                        </div>
+                    </td>
+                    <td style ="text-align: center">
+                        @String.Format("{0:#,##0.##}", lstBooks.FirstOrDefault(x => x.Id == item.BookId).Price) VNĐ
+                    </td>
+                    <td style="width: 200px;">
+                        <div class="col-md-4">
+                            @using (Html.BeginForm("Delete", "Cart", new { id = item.Id }))
+                            {
+                                <input type="hidden" value="@item.Id" name="id" />
+                                <input type="submit" value="X" class="btn btn-primary" style="font-weight: bold; width: 60px; margin-left: 120px;" />
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    {
+        foreach (var item in Model)
+        {
+            tongTien += item.Quantity * @lstBooks.FirstOrDefault(x => x.Id == item.BookId).Price;
+        }
+        tongTienString = String.Format("{0:#,##0.##}", tongTien);
+    }
+
+    <div class="row" style="margin-top: 50px;">
+        <div class="col-md-6">
+            <a asp-controller="Home" asp-action="ShowAllBooks">
+                <button style="border: none; border-radius: 5px; color: white; background-color: darkblue; font-weight: bold; padding: 5px 20px;">
+                    &#8592; Trở lại
+                </button>
+            </a>
+        </div>
+        <div class="col-md-6">
+            <h4 style="text-align: right; font-weight: bold; color: darkblue;">Tổng tiền: </h4>
+            <h3 style="text-align: right; font-weight: bold; color: red; margin-top: 10px;">@tongTienString VNĐ </h3>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 50px;">
+        <div class="col-md-10"></div>
+        <div class="col-md-2">
+            @using (Html.BeginForm("Purchase", "Bill", FormMethod.Post))
+            {
+                foreach (var cartItem in Model)
+                {
+                    <input type="hidden" name="cartDetail.Id" value="@cartItem.Id" />
+                    <input type="hidden" name="cartDetail.BookId" value="@cartItem.BookId" />
+                    <input type="hidden" name="cartDetail.Quantity" value="@cartItem.Quantity" />
+                    <input type="hidden" name="cartDetail.UserId" value="@cartItem.UserId" />
+                }
+                <button type="submit" class="btn btn-warning" style="font-weight: bold; width: 200px; height: 50px; color: red;">THANH TOÁN</button>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <h3 style="text-align: center; font-weight: bold; color: darkblue; margin-top: 30px;">Hiện không có sản phẩm nào trong giỏ hàng!</h3>
+}
+

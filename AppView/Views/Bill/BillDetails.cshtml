@@ -1,0 +1,70 @@
+﻿@using AppData.Models;
+@using AppData.DBContext;
+@using Microsoft.AspNetCore.Http;
+@model IEnumerable<AppData.Models.BillDetail>
+
+@{
+    ViewData["Title"] = "Chi tiết hóa đơn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int stt = 1;
+    string maHD = ViewBag.Code;
+    int totalPrice = ViewBag.TotalPrice;
+    string totalPriceString = String.Format("{0:#,##0.##}", totalPrice);
+    List<Book> lstBooks = ViewBag.Books;
+}
+
+<h1 style="text-align: center; font-weight: bold; margin-top: 50px; color: white; background-color: darkblue; padding-top: 10px; padding-bottom: 10px;">CHI TIẾT HÓA ĐƠN @maHD</h1>
+
+@if(Model != null && Model.Count() > 0)
+{
+    <table class="table" style="margin-top: 30px;">
+        <thead>
+            <tr>
+                <th style="text-align: center">STT</th>
+                <th style="text-align: center">Tên sản phẩm</th>
+                <th style="text-align: center">Số lượng mua</th>
+                <th style="text-align: center">Giá tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align: center">
+                        @(stt++)
+                    </td>
+                    <td style="text-align: center">
+                        @lstBooks.FirstOrDefault(x => x.Id == item.BookId).Name
+                    </td>
+                    <td style="text-align: center">
+                        @item.Quantity
+                    </td>
+                    <td style="text-align: center">
+                        @String.Format("{0:#,##0.##}", item.Price) VNĐ
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="row" style="margin-top: 50px;">
+        <div class="col-md-6">
+            <a asp-action="ShowAllBills">
+                <button style="border: none; border-radius: 5px; color: white; background-color: darkblue; font-weight: bold; padding: 5px 20px;">
+                    &#8592; Trở lại
+                </button>
+            </a>
+        </div>
+        <div class="col-md-6">
+            <h4 style="text-align: right; font-weight: bold; color: darkblue">Tổng tiền: </h4>
+            <h3 style="text-align: right; font-weight: bold; color: red; margin-top: 10px;">@totalPriceString VNĐ </h3>
+        </div>
+    </div>
+}
+
+    
+    
+
+
+
+

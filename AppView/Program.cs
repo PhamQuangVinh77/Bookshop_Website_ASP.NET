@@ -1,7 +1,11 @@
+﻿using Microsoft.Extensions.Options;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession(); //Đăng ký dịch vụ để sử dụng Session
 
 var app = builder.Build();
 
@@ -15,6 +19,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession(); // Thêm để có thể sử dụng dịch vụ Session đã đăng ký
 
 app.UseRouting();
 
