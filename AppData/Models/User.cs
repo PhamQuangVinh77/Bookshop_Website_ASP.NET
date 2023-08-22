@@ -18,15 +18,15 @@ namespace AppData.Models
         public string Email { get; set; }
 
         [Required(ErrorMessage = "*Bắt buộc nhập")]
-        [MinLength(10, ErrorMessage = "Password không được ít hơn 10 ký tự!")]
+        [MinLength(10, ErrorMessage = "*Password không được ít hơn 10 ký tự!")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "*Bắt buộc nhập")]
-        [MaxLength(50, ErrorMessage = "Tên không quá 50 ký tự!")]
+        [MaxLength(50, ErrorMessage = "*Tên không quá 50 ký tự!")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "*Bắt buộc nhập")]
-        [Phone(ErrorMessage = "Sai định dạng số điện thoại!")]
+        [Phone(ErrorMessage = "*Sai định dạng SĐT")]
         public string PhoneNumber { get; set; }
         [ForeignKey("UserRole")]
         public Guid RoleId { get; set; }

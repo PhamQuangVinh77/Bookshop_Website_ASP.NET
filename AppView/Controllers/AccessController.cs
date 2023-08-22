@@ -62,34 +62,41 @@ namespace AppView.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet("[action]")]
+        [HttpPost("[action]")]
+
         public async Task<IActionResult> Register(User user)
         {
             var lstUsers = _dbContext.users.ToList();
-            int count1 = lstUsers.Count;
-            foreach(var x in lstUsers)
+            foreach (var x in lstUsers)
             {
-                if(x.Email == user.Email)
+                if (x.Email == user.Email)
                 {
                     return BadRequest("Email đã được sử dụng!");
                 }
             }
 
-            user.UserId = Guid.NewGuid();   
-            user.Status = true;
-            user.RoleId = _dbContext.userRoles.FirstOrDefault(x => x.RoleName == "Customer").RoleId;
-            _dbContext.users.Add(user);
-            _dbContext.SaveChanges();
+            //user.UserId = Guid.NewGuid();
+            //user.Status = true;
+            //user.RoleId = _dbContext.userRoles.FirstOrDefault(x => x.RoleName == "Customer").RoleId;
 
-            var cart = new Cart();
-            _dbContext.carts.Add(cart);
-            _dbContext.SaveChanges();
+            //var api = "https://localhost:7287/api/User";
+            //var res = await http.PostAsJsonAsync<User>(api, user);
+            //if (res.IsSuccessStatusCode)
+            //{
+            //    return RedirectToAction("Login", "Home");
+            //}
 
-            if(_dbContext.users.ToList().Count > count1)
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            //var cart = new Cart();
+            //_dbContext.carts.Add(cart);
+            //_dbContext.SaveChanges();
 
+            //if(_dbContext.users.ToList().Count > count1)
+            //{
+            //    return RedirectToAction("Login", "Home");
+            //}
             return View();
+
         }
     }
 }

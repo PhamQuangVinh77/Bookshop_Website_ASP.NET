@@ -39,17 +39,38 @@
         <h5 style="text-align: justify">MÔ TẢ: @Html.DisplayFor(model => model.Description)</h5>
         <div class="row">
             <div class="col-md-6">
-                <h3 style="color: gray; text-decoration:line-through">@giaTienThat VNĐ</h3>
-                <h2 style="color: red; font-weight: bold">@giaTienKM VNĐ</h2>
-                <p style="color: gray;">(Bạn đã tiết kiệm được @tienTietKiem VNĐ)</p>
+                @if (Model.Status == true)
+                {
+                    <h4 style="color: gray; text-decoration: line-through;">@giaTienThat VNĐ</h4>
+                    <h3 style="color: red; font-weight: bold;">@giaTienKM VNĐ</h3>
+                    <p style="color: gray;">(Bạn đã tiết kiệm được @tienTietKiem VNĐ)</p>
+                }
+                else if(Model.Status == false && Model.Description == "Ngừng kinh doanh")
+                {
+                    <h3 style="text-align: center; color: gray; font-weight: bold; border: solid 5px gray; margin-top: 25px;">NGỪNG KINH DOANH</h3>
+                }
+                else
+                {
+                    <h3 style="text-align: center; color: gray; font-weight: bold; border: solid 5px gray; margin-top: 25px;">ĐÃ HẾT HÀNG</h3>
+                }             
             </div>
             <div class="col-md-6">
                 <div style="text-align: center;">
-                    @using (Html.BeginForm("AddToCart", "Cart", new { id = Model.Id }))
+                    @if(Model.Status == false)
                     {
-                        <input type="submit" value="THÊM VÀO GIỎ HÀNG" class="btn btn-primary" style=" width: 200px; height: 50px; font-weight: bold; margin-top: 20px;" />
-                        <h5 style="color: gray; margin-top: 20px;">(Đã bán: @Model.NumberOfPurchase)</h5>
+                        using (Html.BeginForm("AddToCart", "Cart", new { id = Model.Id }))
+                        {
+                            <input type="submit" value="THÊM VÀO GIỎ HÀNG" class="btn btn-primary" style=" width: 200px; height: 50px; font-weight: bold; margin-top: 20px; background-color: gray; border: none" disabled/>
+                        }
                     }
+                    else
+                    {
+                        using (Html.BeginForm("AddToCart", "Cart", new { id = Model.Id }))
+                        {
+                            <input type="submit" value="THÊM VÀO GIỎ HÀNG" class="btn btn-primary" style=" width: 200px; height: 50px; font-weight: bold; margin-top: 20px;" />
+                        }
+                    }
+                    <h5 style="color: gray; margin-top: 20px;">(Đã bán: @Model.NumberOfPurchase)</h5>
                 </div>
             </div>
         </div>
