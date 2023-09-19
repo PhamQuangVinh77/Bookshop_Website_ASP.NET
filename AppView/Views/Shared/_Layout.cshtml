@@ -79,12 +79,12 @@
                         @if (Context.Session.GetString("UserName") == "Admin")
                         {
                             <li class="nav-item" style="width: 150px">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="MannageBills" onmouseover="Over(this)" onmouseout="Out(this)" style="text-align:center">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="BillsForAdmin" onmouseover="Over(this)" onmouseout="Out(this)" style="text-align:center">
                                     <b>QL hóa đơn</b>
                                 </a>
                             </li>
                             <li class="nav-item" style="width: 150px">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="MannageBooks" onmouseover="Over(this)" onmouseout="Out(this)" style="text-align:center">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="BooksForAdmin" onmouseover="Over(this)" onmouseout="Out(this)" style="text-align:center">
                                     <b>QL sản phẩm</b>
                                 </a>
                             </li>

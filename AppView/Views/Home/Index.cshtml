@@ -1,8 +1,143 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using AppData.Models;
+@model IEnumerable<AppData.Models.Book>
+
+@{
+    ViewData["Title"] = "Trang chủ";
+    List<Book> lstBookBanChay = ViewBag.BanChay;
+    List<Book> lstSpMoi = ViewBag.SpMoi;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1 style="text-align: center; font-weight: bold; margin-top: 50px; color: white; background-color: darkblue; padding-top: 10px; padding-bottom: 10px;">TRANG CHỦ</h1>
+
+
+<h3 style="text-align: center; font-weight: bold; margin-top: 30px; color: white; background-color: darkorange; padding-top: 10px; padding-bottom: 10px;">TOP SẢN PHẨM BÁN ĐƯỢC NHIỀU NHẤT</h3>
+<div class="row" style="margin-top: 20px;">
+    @for(int i = 0; i < 3; i++)
+    {
+        <div class="col-md-4" style="margin-top: 20px;">
+            <div class="card" style="background-color: white; border-radius: 10px;">
+                <a asp-action="Details" asp-route-id="@lstBookBanChay[i].Id">
+                    <img src="@lstBookBanChay[i].ImageLink" class="card-img-top" alt="Image">
+                </a>
+                <div class="card-body">
+                    <h3 class="card-title" style="text-align: center;">@lstBookBanChay[i].Name</h3>
+                    @{
+                        int giaTien = lstBookBanChay[i].Price / 9 * 10;
+                        string giaTienThat = String.Format("{0:#,##0.##}", giaTien);
+                        string giaTienKM = String.Format("{0:#,##0.##}", lstBookBanChay[i].Price);
+
+                    }
+                    @if (lstBookBanChay[i].Status == true)
+                    {
+                        <h4 style="text-align: center; color: gray; text-decoration: line-through;">@giaTienThat VNĐ</h4>
+                        <h3 style="text-align: center; color: red; font-weight: bold;">@giaTienKM VNĐ</h3>
+                    }
+                    else if (lstBookBanChay[i].Status == false && lstBookBanChay[i].Description == "Ngừng kinh doanh")
+                    {
+                        <h3 style="text-align: center; color: gray; font-weight: bold; border: solid 5px gray; margin-top: 20px;">NGỪNG KINH DOANH</h3>
+                    }
+                    else
+                    {
+                        <h3 style="text-align: center; color: gray; font-weight: bold; border: solid 5px gray; margin-top: 20px;">ĐÃ HẾT HÀNG</h3>
+                    }
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div style="text-align: right; margin-right: 10px; margin-top: 30px;">
+    <a asp-action="ShowAllBooks" asp-controller="Home" style="text-decoration: none; font-weight: bold;">
+        <h6>Xem thêm >></h6>
+    </a>
+</div>
+
+<h3 style="text-align: center; font-weight: bold; margin-top: 30px; color: white; background-color: darkorange; padding-top: 10px; padding-bottom: 10px;">SẢN PHẨM MỚI RA MẮT</h3>
+<div class="row" style="margin-top: 20px;">
+    @for (int i = 0; i < 3; i++)
+    {
+        <div class="col-md-4" style="margin-top: 20px;">
+            <div class="card" style="background-color: white; border-radius: 10px;">
+                <a asp-action="Details" asp-route-id="@lstSpMoi[i].Id">
+                    <img src="@lstSpMoi[i].ImageLink" class="card-img-top" alt="Image">
+                </a>
+                <div class="card-body">
+                    <h3 class="card-title" style="text-align: center;">@lstSpMoi[i].Name</h3>
+                    @{
+                        int giaTien = lstSpMoi[i].Price / 9 * 10;
+                        string giaTienThat = String.Format("{0:#,##0.##}", giaTien);
+                        string giaTienKM = String.Format("{0:#,##0.##}", lstSpMoi[i].Price);
+
+                    }
+                    @if (lstSpMoi[i].Status == true)
+                    {
+                        <h4 style="text-align: center; color: gray; text-decoration: line-through;">@giaTienThat VNĐ</h4>
+                        <h3 style="text-align: center; color: red; font-weight: bold;">@giaTienKM VNĐ</h3>
+                    }
+                    else if (lstSpMoi[i].Status == false && lstSpMoi[i].Description == "Ngừng kinh doanh")
+                    {
+                        <h3 style="text-align: center; color: gray; font-weight: bold; border: solid 5px gray; margin-top: 20px;">NGỪNG KINH DOANH</h3>
+                    }
+                    else
+                    {
+                        <h3 style="text-align: center; color: gray; font-weight: bold; border: solid 5px gray; margin-top: 20px;">ĐÃ HẾT HÀNG</h3>
+                    }
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div style="text-align: right; margin-right: 10px; margin-top: 30px;">
+    <a asp-action="ShowAllBooks" asp-controller="Home" style="text-decoration: none; font-weight: bold;">
+        <h6>Xem thêm >></h6>
+    </a>
+</div>
+
+<h3 style="text-align: center; font-weight: bold; margin-top: 30px; color: white; background-color: darkorange; padding-top: 10px; padding-bottom: 10px;">TIN TỨC CỘNG ĐỒNG</h3>
+<div class="row" style="margin-top: 20px;">
+    <div class="col-md-4" style="margin-top: 20px;">
+        <div class="card">
+            <img src="https://file.hstatic.net/200000343865/article/img-7950-5726_ac86f6ffae044653ab54a286eefdc905_large.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text" style="font-weight: bold;">
+                    TÌM GIẢI PHÁP ĐẨY MẠNH TRUYỀN THÔNG PHÁT TRIỂN VĂN HÓA ĐỌC
+                </p>
+                <p>
+                    Lần đầu tiên có một cuộc gặp “bàn tròn” giữa những người làm xuất bản và các cơ quan báo chí, truyền thông để cùng nhau tìm ra những giải pháp hiệu quả nhất nhằm thúc đẩy truyền thông cho văn hóa đọc phát triển mạnh mẽ hơn nữa.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4" style="margin-top: 20px;">
+        <div class="card">
+            <img src="https://file.hstatic.net/200000343865/article/6914_z4597835844409-491806f2aa34c31bc84ee931ffeac77b_a1d682486add489fa791b1454efd9bd2_large.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text" style="font-weight: bold;">
+                    KHÁM PHÁ NỘI TÂM, VƯỢT QUA ÁP LỰC CÙNG TÁC GIẢ PHAN ĐĂNG
+                </p>
+                <p>
+                    Ngày 12/8, tại Trung tâm Sách Kim Đồng (quận 1), tác giả - diễn giả Phan Đăng đã giao lưu với độc giả TPHCM về quyển sách mới nhất của mình là "39 đoản thiền để thấy".
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4" style="margin-top: 20px;">
+        <div class="card">
+            <img src="https://file.hstatic.net/200000343865/article/thu-vien-mien-phi_ef8669d0bc86491ebc758a3fa9da78a8_large.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text" style="font-weight: bold;">
+                    THẦY GIÁO MỞ THƯ VIỆN 1.000 ĐẦU SÁCH MIỄN PHÍ CHO TRẺ VÙNG CAO
+                </p>
+                <p>
+                    Lấy ý tưởng từ tựa sách “Trời xanh ngập nắng” của tác giả Rosita Nguyễn và mong muốn mang lại không gian đọc, nơi vui chơi cho trẻ vùng cao, thầy Nguyễn Văn Trung đã mở thư viện miễn phí cho bạn đọc nhỏ tuổi.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="text-align: right; margin-right: 10px; margin-top: 30px;">
+    <a asp-action="Privacy" asp-controller="Home" style="text-decoration: none; font-weight: bold;">
+        <h6>Xem thêm >></h6>
+    </a>
 </div>

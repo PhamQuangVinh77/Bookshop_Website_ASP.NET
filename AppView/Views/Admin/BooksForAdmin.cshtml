@@ -1,0 +1,126 @@
+﻿@using AppData.Models
+@model IEnumerable<AppData.Models.Book>
+
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int stt = 1;
+    List<Author> lstAuthor = ViewBag.ListAuthor;
+    List<Category> lstCategory = ViewBag.ListCategory;
+}
+
+<h1 style="text-align: center; font-weight: bold; margin-top: 50px; color: white; background-color: darkblue; padding-top: 10px; padding-bottom: 10px;">QUẢN LÝ SẢN PHẨM</h1>
+
+<div style="margin-top: 30px; margin-bottom: 30px;">
+    <a asp-controller="Admin" asp-action="CreateBook">
+        <button style="border: none; border-radius: 5px; color: white; background-color: darkblue; font-weight: bold; padding: 5px 20px;">
+            &#43; Thêm sản phẩm
+        </button>
+    </a>
+</div>
+
+<table class="table">
+    <thead style="text-align: center;">
+        <tr>
+            <th>
+                STT
+            </th>
+            <th>
+                Ảnh SP
+            </th>
+            <th>
+                Tên sản phẩm
+            </th>
+            <th>
+                Tác giả
+            </th>
+            <th>
+                Thể loại
+            </th>
+            <th>
+                Giá tiền
+            </th>
+            <th>
+                SL tồn
+            </th>
+            <th>
+                Ngày mở bán
+            </th>
+            <th>
+                SL đã bán
+            </th>
+            <th>
+                Trạng thái
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            <tr style ="text-align: center;">
+            <td>
+                @(stt++)
+            </td>
+            <td style="width: 100px;">
+               <img src="@item.ImageLink" style="max-width: 100%;" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @lstAuthor.FirstOrDefault(x => x.Id == item.AuthorId).AuthorName
+            </td>
+            <td>
+                @lstCategory.FirstOrDefault(x => x.Id == item.CategoryId).CategoryName
+            </td>
+            <td>
+                @String.Format("{0:#,##0.##}", item.Price) VNĐ
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AvailableQuantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpeningDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfPurchase)
+            </td>
+                @if (item.Status == true)
+                {
+                    <td>Còn hàng</td>
+                }
+                else if (item.Status == false && item.Description == "Ngừng kinh doanh")
+                {
+                    <td>Ngừng kinh doanh</td>
+                }
+                else
+                {
+                    <td>Hết hàng</td>
+                }
+
+            <td width="100px;">
+                    <div style="margin-bottom: 10px;">
+                        <a asp-action="Details" asp-controller="Home" asp-route-id="@item.Id">
+                            <input type="hidden" value="@item.Id" name="id" />
+                            <input type="submit" value="Chi tiết" class="btn btn-primary" style="width: 100px; font-weight: bold" />
+                        </a>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        @using (Html.BeginForm("EditBook", "Admin", new { id = item.Id }))
+                        {
+                            <input type="hidden" value="@item.Id" name="id" />
+                            <input type="submit" value="Sửa" class="btn btn-primary" style="width: 100px; font-weight: bold" />
+                        }
+                    </div>
+                    <div>
+                        @using (Html.BeginForm("DeleteBook", "Admin", new { id = item.Id }))
+                        {
+                            <input type="hidden" value="@item.Id" name="id" />
+                            <input type="submit" value="Xóa" class="btn btn-primary" style="width: 100px; font-weight: bold" />
+                        }
+                    </div>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

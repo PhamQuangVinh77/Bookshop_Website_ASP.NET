@@ -21,8 +21,20 @@ namespace AppView.Controllers
             _httpClient = new HttpClient();
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
+            var api = "https://localhost:7287/api/Book";
+            var res = await _httpClient.GetFromJsonAsync<List<Book>>(api);
+
+            var lstBanChay = res.Where(x => x.Status == true).ToList();
+            lstBanChay.Sort((a,b) => b.NumberOfPurchase.CompareTo(a.NumberOfPurchase));
+            ViewBag.BanChay = lstBanChay;
+
+            var lstSanPhamMoi = res.Where(x => x.Status == true).ToList();
+            lstSanPhamMoi.Sort((a,b) => b.OpeningDate.CompareTo(a.OpeningDate));
+            ViewBag.SpMoi = lstSanPhamMoi;
+
             return View();
         }
 
@@ -40,7 +52,8 @@ namespace AppView.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details([FromRoute]Guid id)
+        [Route("[action]/{id}")]
+        public async Task<IActionResult> Details(Guid id)
         {
             var api = "https://localhost:7287/api/Book/" + id.ToString();
             var res = await _httpClient.GetFromJsonAsync<Book>(api);

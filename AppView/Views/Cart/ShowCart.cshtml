@@ -36,21 +36,21 @@
                     <td style="width: 200px;">
                         <div class="row">
                             <div class="col-md-4" style="text-align: center;">
-                                @using (Html.BeginForm("Add", "Cart", new { id = item.Id, idBook = item.BookId }))
+                                @using (Html.BeginForm("Subtract", "Cart", new { id = item.Id }))
                                 {
                                     <input type="hidden" value="@item.Id" name="id" />
-                                    <input type="hidden" value="@item.BookId" name="idBook" />
-                                    <input type="submit" value="+" class="btn btn-primary" style="font-weight: bold; width: 60px;" />
+                                    <input type="submit" value="-" class="btn btn-primary" style="font-weight: bold; width: 60px;" />
                                 }
                             </div>
                             <div class="col-md-4" style="text-align: center;">
                                 @Html.DisplayFor(modelItem => item.Quantity)
                             </div>
                             <div class="col-md-4" style="text-align: center;">
-                                @using (Html.BeginForm("Subtract", "Cart", new { id = item.Id }))
+                                @using (Html.BeginForm("Add", "Cart", new { id = item.Id, idBook = item.BookId }))
                                 {
                                     <input type="hidden" value="@item.Id" name="id" />
-                                    <input type="submit" value="-" class="btn btn-primary" style="font-weight: bold; width: 60px;" />
+                                    <input type="hidden" value="@item.BookId" name="idBook" />
+                                    <input type="submit" value="+" class="btn btn-primary" style="font-weight: bold; width: 60px;" />
                                 }
                             </div>
                         </div>
