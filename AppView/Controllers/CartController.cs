@@ -27,7 +27,7 @@ namespace AppView.Controllers
             cartDetail.UserId = _dbContext.users.ToList().FirstOrDefault(x => x.Name == "Khách lẻ").UserId;
             cartDetail.Quantity = 1;
 
-            if (HttpContext.Session.GetString("UserName") == null)
+            if (HttpContext.Session.GetString("UserName") == null) // Trường hợp khách mua hàng chưa đăng nhập nhưng vẫn mua hàng (khách lẻ)
             {
                 var carts = SessionServices.GetObjFromSession(HttpContext.Session, "Cart");
                 if (carts.Count == 0)

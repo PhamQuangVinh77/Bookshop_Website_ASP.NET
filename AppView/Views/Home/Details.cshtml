@@ -36,13 +36,14 @@
         <h1 style="font-weight: bold; color: darkblue">@Html.DisplayFor(model => model.Name)</h1>
         <h5>TÁC GIẢ: @tacGia</h5>
         <h5>THỂ LOẠI: @theLoai</h5>
-        <h5 style="text-align: justify">MÔ TẢ: @Html.DisplayFor(model => model.Description)</h5>
+        <h5 style="text-align: justify">MÔ TẢ:</h5>
+        <h6 style="color: gray">@Html.DisplayFor(model => model.Description)</h6>
         <div class="row">
             <div class="col-md-6">
                 @if (Model.Status == true)
                 {
-                    <h4 style="color: gray; text-decoration: line-through;">@giaTienThat VNĐ</h4>
                     <h3 style="color: red; font-weight: bold;">@giaTienKM VNĐ</h3>
+                    <h4 style="color: gray; text-decoration: line-through;">@giaTienThat VNĐ</h4>
                     <p style="color: gray;">(Bạn đã tiết kiệm được @tienTietKiem VNĐ)</p>
                 }
                 else if(Model.Status == false && Model.Description == "Ngừng kinh doanh")

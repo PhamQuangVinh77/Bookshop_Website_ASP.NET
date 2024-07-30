@@ -106,17 +106,16 @@
                         </a>
                     </div>
                     <div style="margin-bottom: 10px;">
-                        @using (Html.BeginForm("EditBook", "Admin", new { id = item.Id }))
-                        {
+                        <a asp-action="EditBook" asp-controller="Admin" asp-route-id="@item.Id">
                             <input type="hidden" value="@item.Id" name="id" />
                             <input type="submit" value="Sửa" class="btn btn-primary" style="width: 100px; font-weight: bold" />
-                        }
+                        </a>
                     </div>
                     <div>
                         @using (Html.BeginForm("DeleteBook", "Admin", new { id = item.Id }))
                         {
                             <input type="hidden" value="@item.Id" name="id" />
-                            <input type="submit" value="Xóa" class="btn btn-primary" style="width: 100px; font-weight: bold" />
+                            <input type="submit" value="Ngừng KD" class="btn btn-primary" style="width: 100px; font-weight: bold" />
                         }
                     </div>
             </td>

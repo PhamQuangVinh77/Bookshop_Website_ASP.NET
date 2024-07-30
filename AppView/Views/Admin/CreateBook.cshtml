@@ -52,7 +52,7 @@
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label">Thể loại</label>
                 <select asp-for="CategoryId" class ="form-control">
-                    @foreach (var item in lstCategory)
+                    @foreach(var item in lstCategory)
                     {
                         <option value="@item.Id">@item.CategoryName</option>
                     }
@@ -72,6 +72,5 @@
             &#8592; Trở lại
         </button>
     </a>
-
 </div>
 

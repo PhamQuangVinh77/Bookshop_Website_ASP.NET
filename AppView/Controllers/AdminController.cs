@@ -11,14 +11,18 @@ namespace AppView.Controllers
         private readonly ILogger<AccessController> _logger;
         BookShopDbContext _dbContext;
         HttpClient http;
+        List<Author> lstAuthor;
+        List<Category> lstCategory;
         public AdminController(ILogger<AccessController> logger)
         {
             _logger = logger;
             http = new HttpClient();
             _dbContext = new BookShopDbContext();
+            lstAuthor = _dbContext.authors.ToList();
+            lstCategory = _dbContext.categories.ToList();
         }
 
-		[HttpGet]
+        [HttpGet]
 		public async Task<IActionResult> BillsForAdmin()
 		{
             ViewBag.ListUser = _dbContext.users.ToList();
@@ -30,8 +34,8 @@ namespace AppView.Controllers
         [HttpGet]
         public async Task<IActionResult> BooksForAdmin()
         {
-            ViewBag.ListAuthor = _dbContext.authors.ToList();
-            ViewBag.ListCategory = _dbContext.categories.ToList();
+            ViewBag.ListAuthor = lstAuthor;
+            ViewBag.ListCategory = lstCategory;
             var api = "https://localhost:7287/api/Book";
             var res = await http.GetFromJsonAsync<List<Book>>(api);
             return View(res);
@@ -90,18 +94,21 @@ namespace AppView.Controllers
 
         public IActionResult CreateBook()
         {
-            List<Author> lstAuthor = _dbContext.authors.ToList();
-            List<Category> lstCategory = _dbContext.categories.ToList();
-
             ViewBag.Authors = lstAuthor;
             ViewBag.Categories = lstCategory;
-
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateBook(Book book)
         {
+            if (String.IsNullOrEmpty(book.Name) || String.IsNullOrEmpty(book.ImageLink) || String.IsNullOrEmpty(book.Price.ToString()) || String.IsNullOrEmpty(book.AvailableQuantity.ToString()))
+            {
+                ViewBag.Authors = lstAuthor;
+                ViewBag.Categories = lstCategory;
+                return View(book);
+            }
+
             book.Id = Guid.NewGuid();
             book.OpeningDate = DateTime.Now;
             book.NumberOfPurchase = 0;
@@ -109,13 +116,45 @@ namespace AppView.Controllers
 
             _dbContext.books.Add(book);
             _dbContext.SaveChanges();
-            return RedirectToAction("BooksForAdmin"); ;
+            return RedirectToAction("BooksForAdmin");
         }
 
         public IActionResult EditBook(Guid id)
         {
-            Book b = _dbContext.books.First(x => x.Id == id);
+            ViewBag.Authors = lstAuthor;
+            ViewBag.Categories = lstCategory;
+            Book b = _dbContext.books.FirstOrDefault(x => x.Id == id);
             return View(b);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditBook(Book book)
+        {
+            if (String.IsNullOrEmpty(book.Name) || String.IsNullOrEmpty(book.ImageLink) || String.IsNullOrEmpty(book.Price.ToString()) || String.IsNullOrEmpty(book.AvailableQuantity.ToString()))
+            {
+                ViewBag.Authors = lstAuthor;
+                ViewBag.Categories = lstCategory;
+                return View(book);
+            }
+            var bookNeedEdited = _dbContext.books.FirstOrDefault(x => x.Id.Equals(book.Id));
+            bookNeedEdited.Name = book.Name;
+            bookNeedEdited.ImageLink = book.ImageLink;
+            bookNeedEdited.Description = book.Description;
+            bookNeedEdited.Price = book.Price;
+            bookNeedEdited.AvailableQuantity = book.AvailableQuantity;
+            bookNeedEdited.AuthorId = book.AuthorId;
+            bookNeedEdited.CategoryId = book.CategoryId;
+            if (bookNeedEdited.AvailableQuantity <= 0)
+            {
+                bookNeedEdited.Status = false;
+            }
+            else
+            {
+                bookNeedEdited.Status = true;
+            }
+            _dbContext.books.Update(bookNeedEdited);
+            _dbContext.SaveChanges();
+            return RedirectToAction("BooksForAdmin");
         }
     }
 }

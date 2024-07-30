@@ -1,77 +1,85 @@
-﻿@model AppData.Models.Book
+﻿@using AppData.Models
+@model AppData.Models.Book
 
 @{
     ViewData["Title"] = "Chỉnh sửa sản phẩm";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Author> lstAuthor = ViewBag.Authors;
+    List<Category> lstCategory = ViewBag.Categories;
 }
 
-<h1>EditBook</h1>
+<h1 style="text-align: center; font-weight: bold; margin-top: 50px; color: white; background-color: darkblue; padding-top: 10px; padding-bottom: 10px;">CHỈNH SỬA THÔNG TIN</h1>
 
-<h4>Book</h4>
-<hr />
-<div class="row">
+<div class="row" style="margin-top: 30px;">
     <div class="col-md-4">
+        <img id="imageBook" src="@Model.ImageLink" style="max-width: 100%;" />
+    </div>
+    <div class="col-md-8">
         <form asp-action="EditBook">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Tên sản phẩm</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageLink" class="control-label"></label>
-                <input asp-for="ImageLink" class="form-control" />
+                <label asp-for="ImageLink" class="control-label">Link ảnh</label>
+                <input id="urlImageBook" asp-for="ImageLink" class="form-control" onchange="updateImage()"/>
                 <span asp-validation-for="ImageLink" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <label asp-for="Description" class="control-label">Mô tả</label>
+                <textarea rows="4" asp-for="Description" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
+                <label asp-for="Price" class="control-label">Giá tiền</label>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AvailableQuantity" class="control-label"></label>
+                <label asp-for="AvailableQuantity" class="control-label">Số lượng tồn</label>
                 <input asp-for="AvailableQuantity" class="form-control" />
                 <span asp-validation-for="AvailableQuantity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OpeningDate" class="control-label"></label>
-                <input asp-for="OpeningDate" class="form-control" />
-                <span asp-validation-for="OpeningDate" class="text-danger"></span>
+                <label asp-for="AuthorId" class="control-label">Tác giả</label>
+                <select asp-for="AuthorId" class ="form-control">
+                    @foreach(var item in lstAuthor)
+                    {
+                        <option value="@item.Id">@item.AuthorName</option>
+                    }
+                </select>
             </div>
             <div class="form-group">
-                <label asp-for="NumberOfPurchase" class="control-label"></label>
-                <input asp-for="NumberOfPurchase" class="form-control" />
-                <span asp-validation-for="NumberOfPurchase" class="text-danger"></span>
+                <label asp-for="CategoryId" class="control-label">Thể loại</label>
+                <select asp-for="CategoryId" class ="form-control">
+                    @foreach(var item in lstCategory)
+                    {
+                        <option value="@item.Id">@item.CategoryName</option>
+                    }
+                </select>
             </div>
-            <div class="form-group">
-                <label asp-for="AuthorId" class="control-label"></label>
-                <select asp-for="AuthorId" class="form-control" asp-items="ViewBag.AuthorId"></select>
-                <span asp-validation-for="AuthorId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Status" /> @Html.DisplayNameFor(model => model.Status)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="form-group" style="margin-top: 30px; text-align: center;">
+                <input type="submit" value="Chỉnh sửa" class="btn btn-primary" style="font-weight: bold;"/>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div style="margin-top: 30px;">
+    <a asp-action="BooksForAdmin">
+        <button style="border: none; border-radius: 5px; color: white; background-color: darkblue; font-weight: bold; padding: 5px 20px;">
+            &#8592; Trở lại
+        </button>
+    </a>
 </div>
+
+<script>
+    function updateImage() {
+        var imageUrl = document.getElementById('urlImageBook').value;
+        var imageDisplay = document.getElementById('imageBook');
+        imageDisplay.src = imageUrl;
+    }
+</script>
 

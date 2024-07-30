@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppData.Migrations
 {
     [DbContext(typeof(BookShopDbContext))]
-    [Migration("20230815031631_v5")]
-    partial class v5
+    [Migration("20240730051449_last-migration")]
+    partial class lastmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

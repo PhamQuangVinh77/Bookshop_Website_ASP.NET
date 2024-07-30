@@ -29,7 +29,7 @@ namespace AppData.DBContext
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring(optionsBuilder.UseSqlServer(@"Data Source=VINHPQ-LAPTOP\SQLEXPRESS;Initial Catalog=Bookshop_Website_ASP.NET;Integrated Security=True"));
+            base.OnConfiguring(optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-8LST6U5\SQLEXPRESS;Initial Catalog=DATABOOKSTORE;Integrated Security=True;Trust Server Certificate=True"));
         }
     }
 }

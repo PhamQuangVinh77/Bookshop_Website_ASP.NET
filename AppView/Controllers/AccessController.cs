@@ -1,7 +1,6 @@
 ﻿using AppData.DBContext;
 using AppData.Models;
 using Microsoft.AspNetCore.Mvc;
-using static System.Net.WebRequestMethods;
 
 namespace AppView.Controllers
 {
@@ -21,7 +20,7 @@ namespace AppView.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            if(HttpContext.Session.GetString("Email") == null)
+            if (HttpContext.Session.GetString("Email") == null)
             {
                 return View();
             }
@@ -33,12 +32,12 @@ namespace AppView.Controllers
 
         [HttpPost]
 
-        public IActionResult Login(User user) 
+        public IActionResult Login(User user)
         {
-            if(HttpContext.Session.GetString("Email") == null)
+            if (HttpContext.Session.GetString("Email") == null)
             {
                 var u = _dbContext.users.Where(x => x.Email.Equals(user.Email) && x.Password.Equals(user.Password)).FirstOrDefault();
-                if(u != null)
+                if (u != null)
                 {
                     HttpContext.Session.SetString("Email", u.Email);
                     var role = _dbContext.userRoles.FirstOrDefault(x => x.RoleId == u.RoleId);
@@ -47,7 +46,7 @@ namespace AppView.Controllers
                     HttpContext.Session.SetString("UserRole", role.RoleName);
                     return RedirectToAction("Index", "Home");
                 }
-                
+
             }
             return BadRequest("Đăng nhập thất bại!");
         }
@@ -62,9 +61,13 @@ namespace AppView.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet("[action]")]
-        [HttpPost("[action]")]
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
 
+        [HttpPost]
         public async Task<IActionResult> Register(User user)
         {
             var lstUsers = _dbContext.users.ToList();
@@ -76,27 +79,24 @@ namespace AppView.Controllers
                 }
             }
 
-            //user.UserId = Guid.NewGuid();
-            //user.Status = true;
-            //user.RoleId = _dbContext.userRoles.FirstOrDefault(x => x.RoleName == "Customer").RoleId;
+            if (String.IsNullOrEmpty(user.Email) || String.IsNullOrEmpty(user.Password) || String.IsNullOrEmpty(user.Name) || String.IsNullOrEmpty(user.PhoneNumber))
+            {
+                return View();
+            }
 
-            //var api = "https://localhost:7287/api/User";
-            //var res = await http.PostAsJsonAsync<User>(api, user);
-            //if (res.IsSuccessStatusCode)
-            //{
-            //    return RedirectToAction("Login", "Home");
-            //}
+            // Add new User
+            user.UserId = Guid.NewGuid();
+            user.RoleId = _dbContext.userRoles.FirstOrDefault(x => x.RoleName == "Customer").RoleId;
+            user.Status = true;
+            _dbContext.users.Add(user);
 
-            //var cart = new Cart();
-            //_dbContext.carts.Add(cart);
-            //_dbContext.SaveChanges();
+            // Add Cart for new User
+            var cart = new Cart();
+            cart.UserId = user.UserId;
+            _dbContext.carts.Add(cart);
+            _dbContext.SaveChanges();
 
-            //if(_dbContext.users.ToList().Count > count1)
-            //{
-            //    return RedirectToAction("Login", "Home");
-            //}
-            return View();
-
+            return RedirectToAction("Login");
         }
     }
 }

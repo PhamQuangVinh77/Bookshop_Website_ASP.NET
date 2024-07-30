@@ -4,7 +4,7 @@
 
 namespace AppData.Migrations
 {
-    public partial class v5 : Migration
+    public partial class Migration_02 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
